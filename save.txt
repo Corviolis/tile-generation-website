@@ -1,0 +1,400 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WFC Rule Builder v1.0</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+        }
+
+        img {
+          image-rendering: pixelated;
+          image-rendering: -moz-crisp-edges;
+          image-rendering: crisp-edges;
+        }
+
+        #left-panel {
+            flex: 1;
+            background-color: #f0f0f0;
+            padding: 20px;
+            overflow: auto;
+            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+            scrollbar-width: none; /* Firefox */
+        }
+
+        #left-panel::-webkit-scrollbar {
+            display: none;  /* Safari and Chrome */
+        }
+
+        #tiles-container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 1px;
+        }
+
+        #right-panel {
+            flex: 2;
+            background-color: #e0e0e0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #sprite-container {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            margin-top: 20px;
+        }
+
+        .sprite-tile  {
+            width: 50px;
+            height: 50px;
+            background-color: #fff;
+            padding: 0;
+            margin: 0;
+        }
+
+        .middle-tile, .outer-tile {
+            width: 100px;
+            height: 100px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+        }
+
+        .import-box {
+            width: min-content;
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .import-box label {
+            margin-right: 10px;
+        }
+
+        .import-box input {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .import-box button {
+            display: inline-block;
+            width: min-content;
+            padding: 10px 20px;
+            background-color: lightgreen; /* Light Green */
+            color: black; /* White text color */
+            text-align: center;
+            text-decoration: none;
+            white-space: nowrap;
+            border: none;
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .import-box input::placeholder {
+            color: #aaa;
+        }
+
+        .import-box input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        #drop-zone {
+            width: 611px;
+            height: 300px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            align-items: center;
+            gap: 1px;
+            padding: 20px;
+            margin: 20px auto;
+            background-color: white;
+        }
+
+        #drop-zone img {
+            width: 50px;
+            height: 50px;
+        }
+
+    </style>
+</head>
+
+<script>
+        let rules = {};
+        let selected_dir = "";
+        let selected_tile = "";
+
+        function breakImageIntoTiles(image, tileSize) {
+          // Create a canvas element to draw the image
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = image.width;
+          canvas.height = image.height;
+          ctx.drawImage(image, 0, 0);
+
+          const tiles = [];
+          for (let y = 0; y < canvas.height; y += tileSize) {
+            for (let x = 0; x < canvas.width; x += tileSize) {
+              // Create a new canvas for each tile
+              const tileCanvas = document.createElement('canvas');
+              const tileCtx = tileCanvas.getContext('2d');
+              tileCanvas.width = tileSize;
+              tileCanvas.height = tileSize;
+
+              // Copy the portion of the image into the tile
+              tileCtx.drawImage(canvas, x, y, tileSize, tileSize, 0, 0, tileSize, tileSize);
+              tiles.push(tileCanvas);
+            }
+          }
+
+          return tiles;
+        }
+
+        function displayTilesOnPage(tiles) {
+            const container = document.getElementById('tiles-container');
+            container.innerHTML = '';
+
+            const keys = Object.keys(rules)
+            tiles.forEach((tileCanvas, index) => {
+                const img = document.createElement('img');
+                img.className = "sprite-tile";
+                img.id = "tile-" + keys[index]
+                img.src = tileCanvas.toDataURL();
+                img.draggable = true;
+                img.setAttribute("onclick", "clickTile(this)");
+                img.setAttribute("ondragstart", "drag(event)");
+                container.appendChild(img);
+            });
+        }
+
+        function clearSelectedDirection() {
+            const outerTiles = document.querySelectorAll(".outer-tile");
+            const dropZone = document.getElementById("drop-zone");
+            outerTiles.forEach((tile, index) => {
+                tile.style.backgroundColor = "";
+            });
+            dropZone.innerHTML = "";
+            selected_dir = "";
+        }
+
+        function exportRules() {
+            const cRules = JSON.parse(JSON.stringify(rules));
+
+            // Optimize json
+            Object.keys(rules).forEach((key, _) => {
+                Object.keys(rules[key]).forEach((sub_key, _) => {
+                    if (rules[key][sub_key].length === 0) delete cRules[key][sub_key];
+                })
+
+                if (Object.keys(cRules[key]).length === 0) delete cRules[key];
+            });
+
+            const jsonText = JSON.stringify(cRules, null, 2);
+            const blob = new Blob([jsonText], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'rules.json';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function importRules() {
+            const input = document.createElement('input');
+            input.type = 'file';
+
+            input.onchange = e => {
+                const reader = new FileReader();
+                reader.readAsDataURL(e.target.files[0]);
+
+                 reader.onload = readerEvent => {
+                     rules = _.merge(rules, JSON.parse(atob(readerEvent.target.result.replace("data:application/json;base64,", ""))));
+                     console.log(rules);
+                 }
+            }
+            input.click();
+        }
+
+        function importSpriteSheet() {
+            const input = document.createElement('input');
+            input.type = 'file';
+
+            input.onchange = e => {
+                const reader = new FileReader();
+                reader.readAsDataURL(e.target.files[0]);
+
+                reader.onload = readerEvent => {
+                    const image = new Image();
+                    image.src = readerEvent.target.result;
+
+                    image.onload = function() {
+                        let tileSize = document.getElementById("tilesize-input").valueAsNumber;
+                        if (isNaN(tileSize)) tileSize = 16
+
+                        let newRules = {}
+                        for (let y = 0; y < image.height / tileSize; y++) {
+                            for (let x = 0; x < image.width / tileSize; x++) {
+                                newRules[x + ":" + y] = {
+                                    "r": [],
+                                    "l": [],
+                                    "u": [],
+                                    "d": [],
+                                    "ur": [],
+                                    "ul": [],
+                                    "dr": [],
+                                    "dl": []
+                                }
+                            }
+                        }
+                        _.merge(rules, newRules);
+
+                        const tiles = breakImageIntoTiles(image, tileSize);
+                        displayTilesOnPage(tiles);
+                    }
+                }
+            }
+            input.click();
+        }
+
+        function clickTile(tile) {
+            clearSelectedDirection();
+            document.getElementById("selected-tile").src = tile.src;
+            selected_tile = tile.id.split("-")[1];
+            console.log(selected_tile);
+        }
+
+        function onRightClickTile(tile) {
+            var rightclick;
+            var e = window.event;
+            if (e.which) rightclick = (e.which == 3);
+            else if (e.button) rightclick = (e.button == 2);
+
+            if (rightclick) {
+                tile.style.borderColor = "lightgreen";
+                tile.style.borderWidth = "1px";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            //Menu Logic
+            const outerTiles = document.querySelectorAll(".outer-tile");
+            outerTiles.forEach((tile, index) => {
+                tile.addEventListener("click", () => {
+                    if (selected_tile === "") return;
+
+                    clearSelectedDirection(outerTiles);
+                    tile.style.backgroundColor = "lightgreen";
+                    selected_dir = tile.id;
+
+                    rules[selected_tile][selected_dir].forEach((id, index) => {
+                        const img = document.getElementById("tile-" + id);
+                        const imageElement = new Image();
+                        imageElement.id = "drop-" + id;
+                        imageElement.src = img.src;
+                        imageElement.className = "dragged-image";
+                        imageElement.draggable = false;
+                        imageElement.setAttribute("onclick", "clickTile(this)");
+                        document.getElementById("drop-zone").appendChild(imageElement);
+                    });
+                });
+            });
+        });
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.id.split("-")[1] + "~" + event.target.src);
+        }
+
+        function drop(event) {
+            if (selected_dir === "" || selected_tile === "") return;
+
+            event.preventDefault();
+            const imageElement = new Image();
+            const data =  event.dataTransfer.getData("text").split("~");
+            if (document.getElementById("drop-" + data[0]) != null) return;
+
+            imageElement.id = "drop-" + data[0];
+            imageElement.src = data[1];
+            imageElement.className = "dragged-image";
+            imageElement.draggable = false;
+            imageElement.setAttribute("onclick", "clickTile(this)");
+
+            document.getElementById("drop-zone").appendChild(imageElement);
+
+            rules[selected_tile][selected_dir].push(data[0]);
+
+            switch (selected_dir) {
+                case "r": {
+                    rules[data[0]]["l"].push(selected_tile);
+                    break;
+                }
+                case "l": {
+                    rules[data[0]]["r"].push(selected_tile);
+                    break;
+                }
+                case "u": {
+                    rules[data[0]]["d"].push(selected_tile);
+                    break;
+                }
+                case "d": {
+                    rules[data[0]]["u"].push(selected_tile);
+                    break;
+                }
+                case "ur": {
+                    rules[data[0]]["dl"].push(selected_tile);
+                    break;
+                }
+                case "ul": {
+                    rules[data[0]]["dr"].push(selected_tile);
+                    break;
+                }
+                case "dr": {
+                    rules[data[0]]["ul"].push(selected_tile);
+                    break;
+                }
+                case "dl": {
+                    rules[data[0]]["ur"].push(selected_tile);
+                    break;
+                }
+            }
+        }
+    </script>
