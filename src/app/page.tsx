@@ -1,13 +1,11 @@
 "use client";
 
 import StyledButton from "./styledComponents/styledButton";
-import { importSpriteSheet } from "@/app/utils/importFunctions";
+import {exportRules, importSpriteSheet} from "@/app/utils/importFunctions";
 import StyledTile from './styledComponents/styledTile'; 
 import { useState } from 'react'; 
 
 function importRules() {
-}
-function exportRules() {
 }
 
 export default function Home() {
