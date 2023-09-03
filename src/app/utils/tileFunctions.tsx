@@ -1,5 +1,6 @@
-import { JSX, SetStateAction } from 'react';
 import StyledTile from '../styledComponents/styledTile';
+import {clearSelectedDirection} from "@/app/utils/menuFunctions";
+import {DragEventHandler} from "react";
 
 export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
     // Create a canvas element to draw the image
@@ -41,17 +42,23 @@ export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
 }
 
 function clickTile(id: string, src: string) {
-    //clearSelectedDirection();
+    clearSelectedDirection();
     let tile= document.getElementById("selected-tile");
     if (tile == null) return;
 
+    tile.setAttribute("tile-id", id.split("-")[1]);
     tile.style.backgroundImage = "url(" + src + ")";
-
-    //selected_tile = id.split("-")[1];
 }
 
-function drag() {
-    /*if (selected_dir === "" || selected_tile === "") return;
+function drag() {}
+
+/*function drag(event: DragEventHandler) {
+    event.dataTransfer.setData("text", event.target.id.split("-")[1] + "~" + event.target.src);
+}*/
+
+/*
+export function drop(event: DragEvent, rules: {}, selected_dir: string, selected_tile: string) {
+    if (selected_dir === "" || selected_tile === "" || event.dataTransfer == null) return;
 
     event.preventDefault();
     const imageElement = new Image();
@@ -63,8 +70,6 @@ function drag() {
     imageElement.className = "dragged-image";
     imageElement.draggable = false;
     imageElement.setAttribute("onclick", "clickTile(this)");
-
-    document.getElementById("drop-zone").appendChild(imageElement);
 
     rules[selected_tile][selected_dir].push(data[0]);
 
@@ -101,5 +106,7 @@ function drag() {
             rules[data[0]]["ur"].push(selected_tile);
             break;
         }
-    }*/
-}
+    }
+
+    return imageElement;
+}*/

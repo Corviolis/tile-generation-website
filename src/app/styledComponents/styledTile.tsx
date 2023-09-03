@@ -1,5 +1,7 @@
 'use client';
 
+import {DragEventHandler} from "react";
+
 interface TileProps {
     id: string;
     src: string;
