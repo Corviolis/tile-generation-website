@@ -1,3 +1,5 @@
+import StyledTile from '../styledComponents/styledTile';
+
 export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
     // Create a canvas element to draw the image
     const canvas = document.createElement('canvas');
@@ -37,7 +39,7 @@ export function displayTilesOnPage(rules: {}, tiles: HTMLCanvasElement[]) {
 
     const keys = Object.keys(rules)
     tiles.forEach((tileCanvas, index) => {
-        const img = document.createElement('img');
+        const img = <StyledTile />;
         img.className = "sprite-tile";
         img.id = "tile-" + keys[index]
         img.src = tileCanvas.toDataURL();
