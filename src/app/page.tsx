@@ -30,8 +30,8 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-row min-h-screen">
-      <div className="bg-[#efebff] md:min-h-screen p-5 max-w-lg">
+    <main className="flex flex-row h-screen">
+      <div className="bg-[#efebff] max-h-full p-5 flex flex-col">
         <h1 className="text-5xl mb-5 font-bold">WFC Rule Builder v1.0</h1>
         <div className="flex flex-row flex-wrap font-mono">
           
@@ -59,12 +59,12 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="flex w-full max-h-max flex-row flex-wrap gap-1">
+        <div className="grid w-full grid-cols-6 gap-2 overflow-y-auto">
           {tiles.map((item) => {return(item)})}
         </div>
       </div>
       <div className="bg-neutral-400 min-h-screen">
-        {/* <div id="menu">
+        <div id="menu">
                 <div id="sprite-container">
                   {}
                     <div className="outer-tile" id ="ul"></div>
@@ -81,7 +81,7 @@ export default function Home() {
                 <div id="drop-zone" onDrop="drop(event)" ondragover="allowDrop(event)">
                 </div>
                 
-            </div> */}
+            </div>
       </div>
     </main>
   );

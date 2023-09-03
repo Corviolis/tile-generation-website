@@ -16,8 +16,8 @@ export default function StyledTile({ id, src, onClick, onDragStart }:TileProps) 
         onDragStart={onDragStart}
         draggable="true"
         className="
-        
-        "
+        w-full
+        tile"
         />
     )
 }
