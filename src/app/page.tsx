@@ -1,7 +1,15 @@
-function Button({ title, passedfunction }) {
-  return (
-    <button className="bg-orange-100 p-2 px-4 rounded-lg w-fit whitespace-nowrap hover:bg-orange-400 hover:text-white " onClick={passedfunction}>{title}</button>
-  )
+'use client';
+
+import StyledButton from './styledComponents/styledButton';
+
+function importSpriteSheet() {
+  alert("hi");
+}
+function importRules() {
+  alert("hi");
+}
+function exportRules() {
+  alert("hi");
 }
 
 export default function Home() {
@@ -11,19 +19,19 @@ export default function Home() {
             <h1 className="text-5xl mb-5">WFC Rule Builder v1.0</h1>
             <div className="flex flex-row  flex-wrap">
                 <div className="rounded-lg p-4 bg-slate-500 space-x-4 shadow-xl w-fit flex flex-row mr-2 mb-2">
-                  <Button 
-                  title="Import Sprite Sheet" 
+                  <StyledButton
+                  title="Import Sprite Sheet"
                   passedfunction={importSpriteSheet}
                   />
                   <input type="number" id="tilesize-input" placeholder="16" className="w-16 rounded-md text-center"/>
                 </div>
 
                 <div className="rounded-lg p-4 bg-slate-500 space-x-4 shadow-xl w-fit flex flex-row mb-2">
-                  <Button 
+                  <StyledButton 
                   title="Import Rules" 
                   passedfunction={importRules}
                   />
-                  <Button 
+                  <StyledButton 
                   title="Export Rules" 
                   passedfunction={exportRules}
                   />
@@ -54,14 +62,4 @@ export default function Home() {
         </div>
     </main>
   )
-}
-
-function importSpriteSheet() {
-  alert("hi");
-}
-function importRules() {
-  alert("hi");
-}
-function exportRules() {
-  alert("hi");
 }
