@@ -2,53 +2,72 @@ import {breakImageIntoTiles, displayTilesOnPage} from "@/app/utils/imageFunction
 import _ from "lodash";
 import {rules} from "@/app/utils/state";
 
-export function importSpriteSheet() {
+function waitForImage(elem: HTMLImageElement) {
+    return new Promise((res, rej) => {
+        if (elem.complete) {
+            return res(elem);
+        }
+        elem.onload = () => res(elem);
+        elem.onerror = () => rej(elem);
+    });
+}
+
+function waitForReader(elem: FileReader) {
+    return new Promise((res, rej) => {
+        elem.onload = () => res(elem);
+        elem.onerror = () => rej(elem);
+    });
+}
+
+function waitForInput(elem: HTMLInputElement) {
+    return new Promise((res, rej) => {
+        elem.onchange = () => res(elem);
+        elem.onerror = () => rej(elem);
+    });
+}
+
+export async function importSpriteSheet() {
     const input = document.createElement('input');
     input.type = 'file';
-    var tileList = null;
+    input.click();
 
-    input.onchange = e => {
-        const reader: FileReader = new FileReader();
-        if (e.target == null) return;
-        const target = e.target as HTMLInputElement;
-        if (target.files == null) return;
+    await waitForInput(input);
+    if (input.files == null) return;
 
-        reader.readAsDataURL(target.files[0]);
-        reader.onload = readerEvent => {
-            if (readerEvent.target == null) return;
+    const reader: FileReader = new FileReader();
+    reader.readAsDataURL(input.files[0]);
+    await waitForReader(reader);
 
-            const image = new Image();
-            image.src = readerEvent.target.result as string;
-            image.onload = function() {
+    //if (readerEvent.target == null) return;
 
-                //let tileSizeInput = document.getElementById("tilesize-input") as HTMLInputElement;
-                let tileSize = 16;
-                //if (tileSizeInput == null) tileSize = 16;
-                //else tileSize = tileSizeInput.valueAsNumber;
+    const image = new Image();
+    image.src = reader.result as string;
+    await waitForImage(image);
 
-                let newRules: any = {}
-                for (let y = 0; y < image.height / tileSize; y++) {
-                    for (let x = 0; x < image.width / tileSize; x++) {
-                        newRules[x + ":" + y] = {
-                            "r": [],
-                            "l": [],
-                            "u": [],
-                            "d": [],
-                            "ur": [],
-                            "ul": [],
-                            "dr": [],
-                            "dl": []
-                        }
-                    }
-                }
-                _.merge(rules, newRules);
+    //let tileSizeInput = document.getElementById("tilesize-input") as HTMLInputElement;
+    let tileSize = 16;
+    //if (tileSizeInput == null) tileSize = 16;
+    //else tileSize = tileSizeInput.valueAsNumber;
 
-                const tiles = breakImageIntoTiles(image, tileSize);
-                if (tiles == undefined) return;
-                tileList = displayTilesOnPage(rules, tiles);
+    let newRules: any = {}
+    for (let y = 0; y < image.height / tileSize; y++) {
+        for (let x = 0; x < image.width / tileSize; x++) {
+            newRules[x + ":" + y] = {
+                "r": [],
+                "l": [],
+                "u": [],
+                "d": [],
+                "ur": [],
+                "ul": [],
+                "dr": [],
+                "dl": []
             }
         }
     }
-    input.click();
-    return tileList;
+    _.merge(rules, newRules);
+
+    const tiles = breakImageIntoTiles(image, tileSize);
+    if (tiles == undefined) return;
+
+    return displayTilesOnPage(rules, tiles);
 }
