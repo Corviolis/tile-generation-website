@@ -10,8 +10,6 @@ export function clearSelectedDirection() {
 }
 
 export function clickGrid(id: string) {
-    console.log("hello??");
-
     clearSelectedDirection();
     let tile= document.getElementById(id);
     if (tile == null) return;
