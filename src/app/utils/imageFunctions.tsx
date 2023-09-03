@@ -1,3 +1,4 @@
+import { JSX, SetStateAction } from 'react';
 import StyledTile from '../styledComponents/styledTile';
 
 export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
@@ -31,23 +32,21 @@ export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
 }
 
 export function displayTilesOnPage(rules: {}, tiles: HTMLCanvasElement[]) {
-    console.log(tiles);
-
-    const container = document.getElementById('tiles-container');
-    if (container == null) return;
-    container.innerHTML = '';
-
     const keys = Object.keys(rules)
-
-    return (
-        tiles.forEach((tileCanvas, index) => {
+    var tilesList: any[] = [];
+    
+    tiles.forEach((tileCanvas, index) => {
+        tilesList.push(
             <StyledTile 
             id={"tile-" + keys[index]}
             src={tileCanvas.toDataURL()}
             onClick={clickTile}
-            onDragStart={drag}/>
-        })
-    )
+            onDragStart={drag}
+            key={index}/>
+        );
+    })
+    
+    return tilesList;
 }
 
 function clickTile() {

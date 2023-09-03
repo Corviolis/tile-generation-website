@@ -16,9 +16,8 @@ export default function StyledTile({ id, src, onClick, onDragStart }:TileProps) 
         onDragStart={onDragStart}
         draggable="true"
         className="
-        flex-1
-        flex-wrap
-        flex-basis-1/12"
+        
+        "
         />
     )
 }

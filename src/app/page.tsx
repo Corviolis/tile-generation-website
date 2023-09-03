@@ -12,16 +12,18 @@ function exportRules() {
 
 export default function Home() {
 
-  const [tiles, setTiles] = useState([]);
+  var tileArray: any[] = [];
+  const [tiles, setTiles] = useState(tileArray);
 
-  function addTiles() {
-    console.log("list" + importSpriteSheet());
-    //setTiles(importSpriteSheet)
+  async function addTiles() {
+    var tilesList = await importSpriteSheet();
+    console.log("list: " + tilesList);
+    setTiles(tiles.concat(tilesList));
   }
 
   return (
-    <main className="flex md:flex-row flex-col min-h-screen">
-      <div className="bg-[#efebff] md:min-h-screen p-5">
+    <main className="flex flex-row min-h-screen">
+      <div className="bg-[#efebff] md:min-h-screen p-5 max-w-lg">
         <h1 className="text-5xl mb-5 font-bold">WFC Rule Builder v1.0</h1>
         <div className="flex flex-row flex-wrap font-mono">
           
@@ -49,11 +51,11 @@ export default function Home() {
             />
           </div>
         </div>
-        <div>
-          {/* tiles here omegaLUL */}
+        <div className="flex w-full max-h-max flex-row flex-wrap gap-1">
+          {tiles.map((item) => {return(item)})}
         </div>
       </div>
-      <div className="bg-neutral-400 md:min-h-screen min-h-full">
+      <div className="bg-neutral-400 min-h-screen">
         {/* <div id="menu">
                 <div id="sprite-container">
                   {}
