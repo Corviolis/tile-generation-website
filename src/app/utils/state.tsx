@@ -1,1 +1,1 @@
-export let rules: {} = {};
+export let rules = {};
