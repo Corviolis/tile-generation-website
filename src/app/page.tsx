@@ -1,10 +1,8 @@
 'use client';
 
 import StyledButton from './styledComponents/styledButton';
+import {importSpriteSheet} from "@/app/utils/importFunctions";
 
-function importSpriteSheet() {
-  alert("hi");
-}
 function importRules() {
   alert("hi");
 }
