@@ -1,6 +1,6 @@
 import {breakImageIntoTiles, displayTilesOnPage} from "@/app/utils/imageFunctions"
 import _ from "lodash";
-import {rules} from "@/app/utils/state";
+import {rules, setRules} from "@/app/utils/state";
 
 function waitForImage(elem: HTMLImageElement) {
     return new Promise((res, rej) => {
@@ -20,7 +20,6 @@ function waitForReader(elem: FileReader) {
 
 function waitForInput(elem: HTMLInputElement) {
     return new Promise((res, rej) => {
-        if (elem.files != null) return res(elem);
         elem.onchange = () => res(elem);
         elem.onerror = () => rej(elem);
     });
@@ -69,6 +68,21 @@ export async function importSpriteSheet() {
     return displayTilesOnPage(rules, tiles);
 }
 
+export async function importRules(rules: {}) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.click();
+    await waitForInput(input);
+    if (input.files == null) return;
+
+    console.log(input.files);
+    const reader = new FileReader();
+    reader.readAsDataURL(input.files[0]);
+    await waitForReader(reader);
+
+    //rules = _.merge(rules, JSON.parse(atob(readerEvent.target.result.replace("data:application/json;base64,", ""))));
+}
+
 export async function exportRules() {
     const cRules = JSON.parse(JSON.stringify(rules));
 
@@ -89,7 +103,5 @@ export async function exportRules() {
     a.href = URL.createObjectURL(blob);
     a.download = 'rules.json';
     a.style.display = 'none';
-    //document.body.appendChild(a);
     a.click();
-    //document.body.removeChild(a);
 }
