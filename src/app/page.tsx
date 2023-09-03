@@ -70,9 +70,9 @@ export default function Home() {
         </div>
 
         <div
-          className="w-[611px] min-h-[100px] h-fit flex flex-row content-start bg-white gap-2 p-[20px]"
-          onDrop="drop(event)"
-          ondragover="allowDrop(event)"
+          className="xl:w-[611px] lg:w-[500px] min-h-[100px] w-[400px] h-fit flex flex-row content-start bg-white gap-2 p-[20px]"
+          onDrop={() => {}}
+          onDragOver={() => {}}
         ></div>
       </div>
     </main>
