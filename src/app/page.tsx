@@ -31,15 +31,11 @@ export default function Home() {
 
   return (
     <main className="flex flex-row h-screen">
-      <div className="bg-[#efebff] max-h-full p-5 flex flex-col">
+      <div className="bg-[#efebff] max-h-full p-5 flex flex-col w-[400px] lg:min-w-[500px] xl:min-w-[600px] 2xl:min-w-[700px]">
         <h1 className="text-5xl mb-5 font-bold">WFC Rule Builder v1.0</h1>
         <div className="flex flex-row flex-wrap font-mono">
-          
           <div className="rounded-lg p-4 bg-slate-500 space-x-4 shadow-xl w-fit flex flex-row mr-2 mb-2">
-            <StyledButton
-              title="Import Sprite Sheet"
-              onClick={addTiles}
-            />
+            <StyledButton title="Import Sprite Sheet" onClick={addTiles} />
             <input
               type="number"
               id="tilesize-input"
@@ -49,40 +45,45 @@ export default function Home() {
           </div>
 
           <div className="rounded-lg p-4 bg-slate-500 space-x-4 shadow-xl w-fit flex flex-row mb-2">
-            <StyledButton
-              title="Import Rules"
-              onClick={importRules}
-            />
-            <StyledButton
-              title="Export Rules"
-              onClick={exportRules}
-            />
+            <StyledButton title="Import Rules" onClick={importRules} />
+            <StyledButton title="Export Rules" onClick={exportRules} />
           </div>
         </div>
         <div className="grid w-full grid-cols-6 gap-2 overflow-y-auto">
-          {tiles.map((item) => {return(item)})}
+          {tiles.map((item) => {
+            return item;
+          })}
         </div>
       </div>
-      <div className="bg-neutral-400 min-h-screen">
-        <div id="menu">
-                <div id="sprite-container">
-                  {}
-                    <div className="outer-tile" id ="ul"></div>
-                    <div className="outer-tile" id ="u"></div>
-                    <div className="outer-tile" id ="ur"></div>
-                    <div className="outer-tile" id ="l"></div>
-                    <img className="middle-tile" id="selected-tile" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E"/>
-                    <div className="outer-tile" id ="r"></div>
-                    <div className="outer-tile" id ="dl"></div>
-                    <div className="outer-tile" id ="d"></div>
-                    <div className="outer-tile" id ="dr"></div>
-                </div>
+      <div className="bg-neutral-400 w-full min-h-screen flex flex-col items-center justify-center gap-y-10">
+        <div className="grid grid-cols-3 grid-rows-3 mt-[20px] gap-0">
+          <Panel id="ul" />
+          <Panel id="u" />
+          <Panel id="ur" />
+          <Panel id="l" />
+          <div id="selected-tile" />
+          <Panel id="l" />
+          <Panel id="dl" />
+          <Panel id="d" />
+          <Panel id="dr" />
+        </div>
 
-                <div id="drop-zone" onDrop="drop(event)" ondragover="allowDrop(event)">
-                </div>
-                
-            </div>
+        <div
+          className="w-[611px] min-h-[100px] h-fit flex flex-row content-start bg-white gap-2 p-[20px]"
+          onDrop="drop(event)"
+          ondragover="allowDrop(event)"
+        ></div>
       </div>
     </main>
   );
+}
+
+interface PanelProps {
+  id: string;
+}
+
+export function Panel({ id }:PanelProps) {
+  return (
+    <div className="w-[100px] h-[100px] bg-white border-2 border-[#ccc]" id={id}></div>
+  )
 }
