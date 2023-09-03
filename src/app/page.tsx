@@ -62,7 +62,7 @@ export default function Home() {
           <Panel id="u" />
           <Panel id="ur" />
           <Panel id="l" />
-          <div id="selected-tile" />
+          <div id="selected-tile" className="bg-gray-200 border-[#ccc] border-2 bg-no-repeat bg-cover tile"/>
           <Panel id="l" />
           <Panel id="dl" />
           <Panel id="d" />
