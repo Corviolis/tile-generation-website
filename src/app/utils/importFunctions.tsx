@@ -1,6 +1,5 @@
-import {breakImageIntoTiles, displayTilesOnPage} from "@/app/utils/imageFunctions"
+import {breakImageIntoTiles} from "@/app/utils/imageFunctions"
 import _ from "lodash";
-import {rules, setRules} from "@/app/utils/state";
 
 function waitForImage(elem: HTMLImageElement) {
     return new Promise((res, rej) => {
@@ -46,7 +45,7 @@ export async function importSpriteSheet() {
     //if (tileSizeInput == null) tileSize = 16;
     //else tileSize = tileSizeInput.valueAsNumber;
 
-    let newRules: any = {}
+    /*let newRules: any = {}
     for (let y = 0; y < image.height / tileSize; y++) {
         for (let x = 0; x < image.width / tileSize; x++) {
             newRules[x + ":" + y] = {
@@ -61,29 +60,28 @@ export async function importSpriteSheet() {
             }
         }
     }
-    _.merge(rules, newRules);
+    _.merge(rules, newRules);*/
 
-    const tiles = breakImageIntoTiles(image, tileSize);
-    if (tiles == undefined) return;
-    return displayTilesOnPage(rules, tiles);
+    return breakImageIntoTiles(image, tileSize);
 }
 
-export async function importRules(rules: {}) {
+export async function importRulesFromJson(rules: {}) {
     const input = document.createElement('input');
     input.type = 'file';
     input.click();
     await waitForInput(input);
     if (input.files == null) return;
 
-    console.log(input.files);
     const reader = new FileReader();
     reader.readAsDataURL(input.files[0]);
     await waitForReader(reader);
+    if (reader.result == null) return;
 
-    //rules = _.merge(rules, JSON.parse(atob(readerEvent.target.result.replace("data:application/json;base64,", ""))));
+    if (reader.result instanceof ArrayBuffer) return;
+    return _.merge(rules, JSON.parse(atob(reader.result.replace("data:application/json;base64,", ""))));
 }
 
-export async function exportRules() {
+export async function exportRulesAsJson(rules: {}) {
     const cRules = JSON.parse(JSON.stringify(rules));
 
     // Optimize json - Kinda jank, probably should rewrite

@@ -1,22 +1,32 @@
 "use client";
 
 import StyledButton from "./styledComponents/styledButton";
-import {exportRules, importSpriteSheet} from "@/app/utils/importFunctions";
-import StyledTile from './styledComponents/styledTile'; 
-import { useState } from 'react'; 
-
-function importRules() {
-}
+import {exportRulesAsJson, importRulesFromJson, importSpriteSheet} from "@/app/utils/importFunctions";
+import StyledTile from './styledComponents/styledTile';
+import { useState } from 'react';
 
 export default function Home() {
 
-  var tileArray: any[] = [];
+  const tileArray: any[] = [];
   const [tiles, setTiles] = useState(tileArray);
+  const [rules, setRules] = useState({});
 
   async function addTiles() {
-    var tilesList = await importSpriteSheet();
-    console.log("list: " + tilesList);
+    const tilesList = await importSpriteSheet();
+    if (tilesList == undefined) return;
+
     setTiles(tiles.concat(tilesList));
+  }
+
+  async function importRules() {
+    let newRules = await importRulesFromJson(rules);
+    if (newRules == undefined) return;
+
+    setRules(newRules);
+  }
+
+  async function exportRules() {
+    await exportRulesAsJson(rules);
   }
 
   return (

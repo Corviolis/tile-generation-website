@@ -24,14 +24,23 @@ export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
 
           // Copy the portion of the image into the tile
           tileCtx.drawImage(canvas, x, y, tileSize, tileSize, 0, 0, tileSize, tileSize);
-          tiles.push(tileCanvas);
+
+          let key = x / tileSize + ":" + y / tileSize;
+          tiles.push(
+              <StyledTile
+                id={"tile-" + key}
+                src={tileCanvas.toDataURL()}
+                onClick={clickTile}
+                onDragStart={drag}
+                key={key}/>
+          );
         }
     }
 
     return tiles;
 }
 
-export function displayTilesOnPage(rules: {}, tiles: HTMLCanvasElement[]) {
+/*export function displayTilesOnPage(rules: {}, tiles: HTMLCanvasElement[]) {
     const keys = Object.keys(rules)
     var tilesList: any[] = [];
     
@@ -47,7 +56,7 @@ export function displayTilesOnPage(rules: {}, tiles: HTMLCanvasElement[]) {
     })
     
     return tilesList;
-}
+}*/
 
 function clickTile() {
     alert('test');
