@@ -2,6 +2,8 @@
 
 import StyledButton from "./styledComponents/styledButton";
 import { importSpriteSheet } from "@/app/utils/importFunctions";
+import StyledTile from './styledComponents/styledTile'; 
+import { useState } from 'react'; 
 
 function importRules() {
 }
@@ -9,15 +11,24 @@ function exportRules() {
 }
 
 export default function Home() {
+
+  const [tiles, setTiles] = useState([]);
+
+  function addTiles() {
+    console.log("list" + importSpriteSheet());
+    //setTiles(importSpriteSheet)
+  }
+
   return (
     <main className="flex md:flex-row flex-col min-h-screen">
       <div className="bg-[#efebff] md:min-h-screen p-5">
         <h1 className="text-5xl mb-5 font-bold">WFC Rule Builder v1.0</h1>
         <div className="flex flex-row flex-wrap font-mono">
+          
           <div className="rounded-lg p-4 bg-slate-500 space-x-4 shadow-xl w-fit flex flex-row mr-2 mb-2">
             <StyledButton
               title="Import Sprite Sheet"
-              onClick={importSpriteSheet}
+              onClick={addTiles}
             />
             <input
               type="number"
@@ -38,8 +49,9 @@ export default function Home() {
             />
           </div>
         </div>
-
-        <div id="tiles-container"></div>
+        <div>
+          {/* tiles here omegaLUL */}
+        </div>
       </div>
       <div className="bg-neutral-400 md:min-h-screen min-h-full">
         {/* <div id="menu">

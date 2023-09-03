@@ -38,15 +38,22 @@ export function displayTilesOnPage(rules: {}, tiles: HTMLCanvasElement[]) {
     container.innerHTML = '';
 
     const keys = Object.keys(rules)
-    tiles.forEach((tileCanvas, index) => {
-        const img = <StyledTile />;
-        img.className = "sprite-tile";
-        img.id = "tile-" + keys[index]
-        img.src = tileCanvas.toDataURL();
-        console.log(tileCanvas.toDataURL());
-        img.draggable = true;
-        img.setAttribute("onclick", "clickTile(this)");
-        img.setAttribute("ondragstart", "drag(event)");
-        container.appendChild(img);
-    });
+
+    return (
+        tiles.forEach((tileCanvas, index) => {
+            <StyledTile 
+            id={"tile-" + keys[index]}
+            src={tileCanvas.toDataURL()}
+            onClick={clickTile}
+            onDragStart={drag}/>
+        })
+    )
+}
+
+function clickTile() {
+    alert('test');
+}
+
+function drag() {
+    alert('test');
 }

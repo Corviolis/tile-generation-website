@@ -5,8 +5,9 @@ import {rules} from "@/app/utils/state";
 export function importSpriteSheet() {
     const input = document.createElement('input');
     input.type = 'file';
+    var tileList = null;
 
-    input.onchange = e=> {
+    input.onchange = e => {
         const reader: FileReader = new FileReader();
         if (e.target == null) return;
         const target = e.target as HTMLInputElement;
@@ -42,11 +43,12 @@ export function importSpriteSheet() {
                 }
                 _.merge(rules, newRules);
 
-                const tiles= breakImageIntoTiles(image, tileSize);
+                const tiles = breakImageIntoTiles(image, tileSize);
                 if (tiles == undefined) return;
-                displayTilesOnPage(rules, tiles);
+                tileList = displayTilesOnPage(rules, tiles);
             }
         }
     }
     input.click();
+    return tileList;
 }
