@@ -1,3 +1,9 @@
+function Button({ title, passedfunction }) {
+  return (
+    <button className="bg-orange-100 p-2 px-4 rounded-lg w-fit whitespace-nowrap hover:bg-orange-400 hover:text-white " onClick={passedfunction}>{title}</button>
+  )
+}
+
 export default function Home() {
   return (
     <main className="flex md:flex-row flex-col min-h-screen">
@@ -5,13 +11,22 @@ export default function Home() {
             <h1 className="text-5xl mb-5">WFC Rule Builder v1.0</h1>
             <div className="flex flex-row  flex-wrap">
                 <div className="rounded-lg p-4 bg-slate-500 space-x-4 shadow-xl w-fit flex flex-row mr-2 mb-2">
-                    <button className="bg-orange-100 p-2 px-4 rounded-lg w-fit whitespace-nowrap hover:bg-orange-400 hover:text-white " onClick="importSpriteSheet()">Import Sprite Sheet</button>
-                    <input type="number" id="tilesize-input" placeholder="16" className="w-16 rounded-md text-center"/>
+                  <Button 
+                  title="Import Sprite Sheet" 
+                  passedfunction={importSpriteSheet}
+                  />
+                  <input type="number" id="tilesize-input" placeholder="16" className="w-16 rounded-md text-center"/>
                 </div>
 
                 <div className="rounded-lg p-4 bg-slate-500 space-x-4 shadow-xl w-fit flex flex-row mb-2">
-                    <button className="bg-orange-100 p-2 rounded-lg whitespace-nowrap" onClick="importRules()">Import Rules</button>
-                    <button className="bg-orange-100 p-2 rounded-lg whitespace-nowrap" onClick="exportRules()">Export Rules</button>
+                  <Button 
+                  title="Import Rules" 
+                  passedfunction={importRules}
+                  />
+                  <Button 
+                  title="Export Rules" 
+                  passedfunction={exportRules}
+                  />
                 </div>
             </div>
 
@@ -39,4 +54,14 @@ export default function Home() {
         </div>
     </main>
   )
+}
+
+function importSpriteSheet() {
+  alert("hi");
+}
+function importRules() {
+  alert("hi");
+}
+function exportRules() {
+  alert("hi");
 }
