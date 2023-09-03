@@ -1,4 +1,4 @@
-import {breakImageIntoTiles} from "@/app/utils/imageFunctions"
+import {breakImageIntoTiles} from "@/app/utils/tileFunctions"
 import _ from "lodash";
 
 function waitForImage(elem: HTMLImageElement) {

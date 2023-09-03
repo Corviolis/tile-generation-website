@@ -3,7 +3,7 @@
 interface TileProps {
     id: string;
     src: string;
-    onClick: () => void;
+    onClick: (id: string, src: string) => void;
     onDragStart: () => void;
 }
 
@@ -12,7 +12,7 @@ export default function StyledTile({ id, src, onClick, onDragStart }:TileProps) 
         <img 
         id={id}
         src={src}
-        onClick={onClick}
+        onClick={() => {onClick(id, src)}}
         onDragStart={onDragStart}
         draggable="true"
         className="
@@ -21,3 +21,4 @@ export default function StyledTile({ id, src, onClick, onDragStart }:TileProps) 
         />
     )
 }
+

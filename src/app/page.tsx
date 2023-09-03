@@ -10,12 +10,13 @@ export default function Home() {
   const tileArray: any[] = [];
   const [tiles, setTiles] = useState(tileArray);
   const [rules, setRules] = useState({});
+  const [selectedTile, setSelectedTile] = useState("");
 
   async function addTiles() {
     const tilesList = await importSpriteSheet();
     if (tilesList == undefined) return;
 
-    setTiles(tiles.concat(tilesList));
+    setTiles(tilesList);
   }
 
   async function importRules() {
