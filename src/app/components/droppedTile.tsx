@@ -18,9 +18,12 @@ export default function DroppedTile({ id, src }:TileProps) {
         width={25}
         height={25}
         alt="Tilemap Tile"
+        draggable={false}
         onClick={() => {clickTile(id, src); setSelectedTile(id.split("-")[1])}}
         className="
-        w-full
+        xl:w-20
+        lg:w-16
+        w-14
         tile
         transition-[border-width]
         duration-[35ms]
@@ -29,6 +32,7 @@ export default function DroppedTile({ id, src }:TileProps) {
         from-[#fb923c2a]
         to-[#693cfb2a]
         bg-gradient-to-b
+        select-none
         "
         />
     )

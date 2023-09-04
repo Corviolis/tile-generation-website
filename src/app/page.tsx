@@ -82,19 +82,20 @@ export default function Home() {
           <Panel id="dr" />
         </div>
         <div
-          className="xl:w-[611px]
-          lg:w-[500px]
-          w-[400px]
+          className="xl:w-[580px]
+          lg:w-[480px]
+          w-[425px]
           min-h-[100px]
           h-fit
-          flex
-          flex-row
-          content-start
+          grid
+          grid-cols-6
+          place-items-center
+          content-evenly
           bg-orange-100
           border-2
           border-[#AD5B18]
           shadow-2xl
-          gap-2
+          gap-y-2
           p-[20px]"
           onDrop={addDropTiles}
           onDragOver={(event) => event.preventDefault()}
