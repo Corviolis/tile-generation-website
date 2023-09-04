@@ -35,6 +35,7 @@ export default function StyledTile({ id, src }:TileProps) {
         from-[#fb923c2a]
         to-[#693cfb2a]
         bg-gradient-to-b
+        select-none
         "
         />
     )
