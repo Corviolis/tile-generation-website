@@ -5,6 +5,8 @@ import {exportRulesAsJson, importRulesFromJson, importSpriteSheet} from "@/app/u
 import {drop} from '@/app/utils/tileFunctions';
 import React, {useState} from 'react';
 import {Panel} from "@/app/components/Panel";
+import {loadDropTiles} from "@/app/utils/menuFunctions";
+import {userAppStore} from "@/app/utils/store";
 
 export default function Home() {
 
@@ -71,15 +73,15 @@ export default function Home() {
       {/* Right Pane */}
       <div className="bg-neutral-400 w-full min-h-screen flex flex-col items-center justify-center gap-y-10">
         <div className="grid grid-cols-3 grid-rows-3 mt-[20px] gap-0 border-2 border-[#AD5B18] shadow-2xl from-[#fb923ca0] to-[#693cfb9c] bg-gradient-to-b">
-          <Panel id="ul" />
-          <Panel id="u" />
-          <Panel id="ur" />
-          <Panel id="l" />
+          <Panel id="ul" onClick={() => {setDropZoneTiles(loadDropTiles()); setTiles(tiles.concat([]));}}/>
+          <Panel id="u" onClick={() => {setDropZoneTiles(loadDropTiles()); setTiles(tiles.concat([]));}}/>
+          <Panel id="ur" onClick={() => {setDropZoneTiles(loadDropTiles()); setTiles(tiles.concat([]));}}/>
+          <Panel id="l" onClick={() => {setDropZoneTiles(loadDropTiles()); setTiles(tiles.concat([]));}}/>
           <div id="selected-tile" className="border-2 border-[#AD5B18] bg-no-repeat bg-cover tile"/>
-          <Panel id="r" />
-          <Panel id="dl" />
-          <Panel id="d" />
-          <Panel id="dr" />
+          <Panel id="r" onClick={() => {setDropZoneTiles(loadDropTiles()); setTiles(tiles.concat([]));}}/>
+          <Panel id="dl" onClick={() => {setDropZoneTiles(loadDropTiles()); setTiles(tiles.concat([]));}}/>
+          <Panel id="d" onClick={() => {setDropZoneTiles(loadDropTiles()); setTiles(tiles.concat([]));}}/>
+          <Panel id="dr" onClick={() => {setDropZoneTiles(loadDropTiles()); setTiles(tiles.concat([]));}}/>
         </div>
         <div
           className="xl:w-[611px]
