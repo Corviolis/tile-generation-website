@@ -3,7 +3,7 @@
 import StyledButton from "@/app/components/styledButton";
 import {exportRulesAsJson, importRulesFromJson, importSpriteSheet} from "@/app/utils/importFunctions";
 import {drop} from '@/app/utils/tileFunctions';
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {Panel} from "@/app/components/Panel";
 
 export default function Home() {
@@ -17,6 +17,15 @@ export default function Home() {
     if (tilesList == undefined) return;
 
     setTiles(tilesList);
+  }
+
+  async function addDropTiles(event: React.DragEvent<HTMLDivElement>) {
+    const t= dropZoneTiles;
+    t.push(drop(event));
+    console.log(t);
+
+    setDropZoneTiles(t);
+    setTiles(tiles.concat([]));
   }
 
   return (
@@ -86,14 +95,7 @@ export default function Home() {
           shadow-2xl
           gap-2
           p-[20px]"
-          onDrop={(event) => {
-
-            const tiles= dropZoneTiles;
-            tiles.push(drop(event));
-            console.log(tiles);
-
-            setDropZoneTiles(tiles);
-          }}
+          onDrop={addDropTiles}
           onDragOver={(event) => event.preventDefault()}
         >
           {dropZoneTiles.map((item) => {

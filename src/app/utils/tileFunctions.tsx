@@ -97,6 +97,8 @@ export function drop(event: React.DragEvent<HTMLDivElement>) {
         <StyledTile
             id={"drop-" + data[0]}
             src={data[1]}
-            draggable={false}/>
+            draggable={false}
+            key={"drop-" + data[0]}
+        />
     );
 }
