@@ -8,10 +8,9 @@ import Image from 'next/image'
 interface TileProps {
     id: string;
     src: string;
-    draggable: boolean;
 }
 
-export default function StyledTile({ id, src, draggable }:TileProps) {
+export default function StyledTile({ id, src }:TileProps) {
     const setSelectedTile = userAppStore((state) => state.setSelectedTile);
 
     return (
@@ -23,7 +22,7 @@ export default function StyledTile({ id, src, draggable }:TileProps) {
         alt="Tilemap Tile"
         onClick={() => {clickTile(id, src); setSelectedTile(id.split("-")[1])}}
         onDragStart={(event) => drag(event, id, src)}
-        draggable={draggable}
+        draggable={true}
         className="
         w-full
         tile

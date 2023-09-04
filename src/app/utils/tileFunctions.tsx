@@ -1,6 +1,8 @@
 import StyledTile from '@/app/components/styledTile';
 import {userAppStore} from "@/app/utils/store";
 import React from "react";
+import { clearSelectedDirection } from './menuFunctions';
+import DroppedTile from '../components/droppedTile';
 
 export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
     // Create a canvas element to draw the image
@@ -31,7 +33,6 @@ export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
               <StyledTile
                 id={"tile-" + key}
                 src={tileCanvas.toDataURL()}
-                draggable={true}
                 key={key}/>
           );
         }
@@ -94,11 +95,18 @@ export function drop(event: React.DragEvent<HTMLDivElement>) {
     }
 
     return (
-        <StyledTile
+        <DroppedTile
             id={"drop-" + data[0]}
             src={data[1]}
-            draggable={false}
             key={"drop-" + data[0]}
         />
     );
+}
+
+export function clickTile(id: string, src: string) {
+    clearSelectedDirection();
+    let tile= document.getElementById("selected-tile");
+    if (tile == null) return;
+
+    tile.style.backgroundImage = "url(" + src + ")";
 }
