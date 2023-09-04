@@ -41,27 +41,9 @@ export async function importSpriteSheet() {
     image.src = reader.result as string;
     await waitForImage(image);
 
-    //let tileSizeInput = document.getElementById("tilesize-input") as HTMLInputElement;
+    let tileSizeInput = document.getElementById("tilesize-input") as HTMLInputElement;
     let tileSize = 16;
-    //if (tileSizeInput == null) tileSize = 16;
-    //else tileSize = tileSizeInput.valueAsNumber;
-
-    /*let newRules: any = {}
-    for (let y = 0; y < image.height / tileSize; y++) {
-        for (let x = 0; x < image.width / tileSize; x++) {
-            newRules[x + ":" + y] = {
-                "r": [],
-                "l": [],
-                "u": [],
-                "d": [],
-                "ur": [],
-                "ul": [],
-                "dr": [],
-                "dl": []
-            }
-        }
-    }
-    _.merge(rules, newRules);*/
+    if (tileSizeInput != null) tileSize = tileSizeInput.valueAsNumber;
 
     return breakImageIntoTiles(image, tileSize);
 }

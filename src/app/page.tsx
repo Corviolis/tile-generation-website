@@ -53,6 +53,7 @@ export default function Home() {
               id="tilesize-input"
               placeholder="16"
               className="w-16 rounded-md text-center appearance-none"
+              defaultValue="16"
             />
           </div>
           <div className="rounded-lg p-4 bg-[#AD5B18] space-x-4 shadow-xl w-fit flex flex-row mb-2">
