@@ -1,6 +1,6 @@
-import StyledTile from '../styledComponents/styledTile';
-import {clearSelectedDirection} from "@/app/utils/menuFunctions";
-import {DragEventHandler} from "react";
+import StyledTile from '@/app/components/styledTile';
+import {userAppStore} from "@/app/utils/store";
+import React from "react";
 
 export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
     // Create a canvas element to draw the image
@@ -31,8 +31,7 @@ export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
               <StyledTile
                 id={"tile-" + key}
                 src={tileCanvas.toDataURL()}
-                onClick={clickTile}
-                onDragStart={drag}
+                draggable={true}
                 key={key}/>
           );
         }
@@ -41,72 +40,63 @@ export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
     return tiles;
 }
 
-function clickTile(id: string, src: string) {
-    clearSelectedDirection();
-    let tile= document.getElementById("selected-tile");
-    if (tile == null) return;
-
-    tile.setAttribute("tile-id", id.split("-")[1]);
-    tile.style.backgroundImage = "url(" + src + ")";
+function addRule(rules: {[key: string]: {[key: string]: string[]}}, rule: string, tile: string, dir: string) {
+    if (!rules.hasOwnProperty(tile)) rules[tile] = {};
+    if (!rules[tile].hasOwnProperty(dir)) rules[tile][dir] = [];
+    rules[tile][dir].push(rule);
 }
 
-function drag() {}
-
-/*function drag(event: DragEventHandler) {
-    event.dataTransfer.setData("text", event.target.id.split("-")[1] + "~" + event.target.src);
-}*/
-
-/*
-export function drop(event: DragEvent, rules: {}, selected_dir: string, selected_tile: string) {
-    if (selected_dir === "" || selected_tile === "" || event.dataTransfer == null) return;
+export function drop(event: React.DragEvent<HTMLDivElement>) {
+    const selectedTile = userAppStore.getState().selectedTile;
+    const selectedDir = userAppStore.getState().selectedDir;
+    const rules = userAppStore.getState().rules;
+    if (selectedDir === "" || selectedTile === "" || event.dataTransfer == null) return;
 
     event.preventDefault();
     const imageElement = new Image();
     const data =  event.dataTransfer.getData("text").split("~");
     if (document.getElementById("drop-" + data[0]) != null) return;
 
-    imageElement.id = "drop-" + data[0];
-    imageElement.src = data[1];
-    imageElement.className = "dragged-image";
-    imageElement.draggable = false;
-    imageElement.setAttribute("onclick", "clickTile(this)");
-
-    rules[selected_tile][selected_dir].push(data[0]);
-
-    switch (selected_dir) {
+    addRule(rules, data[0], selectedTile, selectedDir);
+    switch (selectedDir) {
         case "r": {
-            rules[data[0]]["l"].push(selected_tile);
+            addRule(rules, selectedTile, data[0], "l");
             break;
         }
         case "l": {
-            rules[data[0]]["r"].push(selected_tile);
+            addRule(rules, selectedTile, data[0], "r");
             break;
         }
         case "u": {
-            rules[data[0]]["d"].push(selected_tile);
+            addRule(rules, selectedTile, data[0], "d");
             break;
         }
         case "d": {
-            rules[data[0]]["u"].push(selected_tile);
+            addRule(rules, selectedTile, data[0], "u");
             break;
         }
         case "ur": {
-            rules[data[0]]["dl"].push(selected_tile);
+            addRule(rules, selectedTile, data[0], "dl");
             break;
         }
         case "ul": {
-            rules[data[0]]["dr"].push(selected_tile);
+            addRule(rules, selectedTile, data[0], "dr");
             break;
         }
         case "dr": {
-            rules[data[0]]["ul"].push(selected_tile);
+            addRule(rules, selectedTile, data[0], "ul");
             break;
         }
         case "dl": {
-            rules[data[0]]["ur"].push(selected_tile);
+            addRule(rules, selectedTile, data[0], "ur");
             break;
         }
     }
 
-    return imageElement;
-}*/
+    return (
+        <StyledTile
+            id={"drop-" + data[0]}
+            src={data[1]}
+            draggable={false}/>
+    );
+}

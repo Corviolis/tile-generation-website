@@ -8,11 +8,3 @@ export function clearSelectedDirection() {
     //dropZone.innerHTML = "";
     //selected_dir = "";
 }
-
-export function clickGrid(id: string) {
-    clearSelectedDirection();
-    let tile= document.getElementById(id);
-    if (tile == null) return;
-
-    tile.style.backgroundColor = "#FB923C";
-}

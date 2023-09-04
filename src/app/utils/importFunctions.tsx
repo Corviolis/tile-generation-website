@@ -1,5 +1,6 @@
 import {breakImageIntoTiles} from "@/app/utils/tileFunctions"
 import _ from "lodash";
+import {userAppStore} from "@/app/utils/store";
 
 function waitForImage(elem: HTMLImageElement) {
     return new Promise((res, rej) => {
@@ -65,7 +66,8 @@ export async function importSpriteSheet() {
     return breakImageIntoTiles(image, tileSize);
 }
 
-export async function importRulesFromJson(rules: {}) {
+export async function importRulesFromJson() {
+    const rules = userAppStore.getState().rules;
     const input = document.createElement('input');
     input.type = 'file';
     input.click();
@@ -78,10 +80,13 @@ export async function importRulesFromJson(rules: {}) {
     if (reader.result == null) return;
 
     if (reader.result instanceof ArrayBuffer) return;
-    return _.merge(rules, JSON.parse(atob(reader.result.replace("data:application/json;base64,", ""))));
+
+    const newRules = _.merge(rules, JSON.parse(atob(reader.result.replace("data:application/json;base64,", ""))));
+    userAppStore.getState().setRules(newRules);
 }
 
-export async function exportRulesAsJson(rules: {}) {
+export async function exportRulesAsJson() {
+    const rules = userAppStore.getState().rules;
     const cRules = JSON.parse(JSON.stringify(rules));
 
     // Optimize json - Kinda jank, probably should rewrite

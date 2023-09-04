@@ -1,46 +1,22 @@
 "use client";
 
-import StyledButton from "./styledComponents/styledButton";
+import StyledButton from "@/app/components/styledButton";
 import {exportRulesAsJson, importRulesFromJson, importSpriteSheet} from "@/app/utils/importFunctions";
+import {drop} from '@/app/utils/tileFunctions';
 import {useState} from 'react';
-import {clickGrid} from "@/app/utils/menuFunctions";
+import {Panel} from "@/app/components/Panel";
 
 export default function Home() {
 
   const tileArray: any[] = [];
   const [tiles, setTiles] = useState(tileArray);
   const [dropZoneTiles, setDropZoneTiles] = useState(tileArray);
-  const [rules, setRules] = useState({});
-  const [selectedDir, setSelectedDir] = useState("");
-  const [selectedTile, setSelectedTile] = useState("");
 
   async function addTiles() {
     const tilesList = await importSpriteSheet();
     if (tilesList == undefined) return;
 
     setTiles(tilesList);
-  }
-
-  async function importRules() {
-    let newRules = await importRulesFromJson(rules);
-    if (newRules == undefined) return;
-
-    setRules(newRules);
-  }
-
-  async function exportRules() {
-    await exportRulesAsJson(rules);
-  }
-
-  interface PanelProps {
-  id: string;
-  onClick: (id: string) => void;
-}
-
-  function Panel({ id, onClick }:PanelProps) {
-    return (
-      <div className="outer-tile w-[100px] h-[100px] bg-white border-2 border-[#ccc]" id={id} onClick={() => {onClick(id)}}></div>
-    )
   }
 
   return (
@@ -59,8 +35,8 @@ export default function Home() {
           </div>
 
           <div className="rounded-lg p-4 bg-slate-500 space-x-4 shadow-xl w-fit flex flex-row mb-2">
-            <StyledButton title="Import Rules" onClick={importRules} />
-            <StyledButton title="Export Rules" onClick={exportRules} />
+            <StyledButton title="Import Rules" onClick={importRulesFromJson} />
+            <StyledButton title="Export Rules" onClick={exportRulesAsJson} />
           </div>
         </div>
         <div className="grid w-full grid-cols-6 gap-2 overflow-y-auto">
@@ -71,22 +47,28 @@ export default function Home() {
       </div>
       <div className="bg-neutral-400 w-full min-h-screen flex flex-col items-center justify-center gap-y-10">
         <div className="grid grid-cols-3 grid-rows-3 mt-[20px] gap-0">
-          <Panel id="ul" onClick={clickGrid}/>
-          <Panel id="u" onClick={clickGrid}/>
-          <Panel id="ur" onClick={clickGrid}/>
-          <Panel id="l" onClick={clickGrid}/>
+          <Panel id="ul"/>
+          <Panel id="u"/>
+          <Panel id="ur"/>
+          <Panel id="l"/>
           <div id="selected-tile" className="bg-gray-200 border-[#ccc] border-2 bg-no-repeat bg-cover tile"/>
-          <Panel id="r" onClick={clickGrid}/>
-          <Panel id="dl" onClick={clickGrid}/>
-          <Panel id="d" onClick={clickGrid}/>
-          <Panel id="dr" onClick={clickGrid}/>
+          <Panel id="r"/>
+          <Panel id="dl"/>
+          <Panel id="d"/>
+          <Panel id="dr"/>
         </div>
 
         <div
           className="xl:w-[611px] lg:w-[500px] min-h-[100px] w-[400px] h-fit flex flex-row content-start bg-white gap-2 p-[20px]"
-          onDrop={() => {
+          onDrop={(event) => {
+
+            const tiles= dropZoneTiles;
+            tiles.push(drop(event));
+            console.log(tiles);
+
+            setDropZoneTiles(tiles);
           }}
-          onDragOver={() => {}}
+          onDragOver={(event) => event.preventDefault()}
         >
            {dropZoneTiles.map((item) => {
             return item;
