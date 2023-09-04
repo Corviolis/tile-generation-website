@@ -3,6 +3,7 @@
 import {userAppStore} from "@/app/utils/store";
 import {clearSelectedDirection} from "@/app/utils/menuFunctions";
 import React from "react";
+import Image from 'next/image'
 
 interface TileProps {
     id: string;
@@ -17,6 +18,9 @@ export default function StyledTile({ id, src, draggable }:TileProps) {
         <Image 
         id={id}
         src={src}
+        width={25}
+        height={25}
+        alt="Tilemap Tile"
         onClick={() => {clickTile(id, src); setSelectedTile(id.split("-")[1])}}
         onDragStart={(event) => drag(event, id, src)}
         draggable={draggable}

@@ -81,7 +81,6 @@ export default function Home() {
           flex-row
           content-start
           bg-orange-100
-          hover:bg-[#2f3b51]
           border-2
           border-[#AD5B18]
           shadow-2xl
