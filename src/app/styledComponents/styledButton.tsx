@@ -16,7 +16,9 @@ export default function StyledButton({ title, onClick }:ButtonProps) {
         whitespace-nowrap 
         hover:bg-orange-400 
         hover:text-white
-        active:bg-orange-600"
+        active:bg-orange-600
+        transition-colors
+        duration-75"
         onClick={onClick}>
             {title}
         </button>
