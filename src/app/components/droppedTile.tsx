@@ -9,7 +9,7 @@ interface DroppedTileProps {
 }
 
 export default function DroppedTile({ id, src }:DroppedTileProps) {
-    const setSelectedTile = userAppStore((state) => state.setSelectedTile);
+    const {setSelectedTile} = userAppStore();
     
     return (
         <Image 

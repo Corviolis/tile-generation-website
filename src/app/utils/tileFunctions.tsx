@@ -1,8 +1,8 @@
 import StyledTile from '@/app/components/styledTile';
 import {userAppStore} from "@/app/utils/store";
 import React from "react";
-import { clearSelectedDirection } from './menuFunctions';
 import DroppedTile from '../components/droppedTile';
+import {clearSelectedDirectionHighlight} from "@/app/components/rightPanel";
 
 export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
     // Create a canvas element to draw the image
@@ -41,70 +41,11 @@ export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
     return tiles;
 }
 
-function addRule(rules: {[key: string]: {[key: string]: string[]}}, rule: string, tile: string, dir: string) {
-    if (!rules.hasOwnProperty(tile)) rules[tile] = {};
-    if (!rules[tile].hasOwnProperty(dir)) rules[tile][dir] = [];
-    rules[tile][dir].push(rule);
-}
-
-export function drop(event: React.DragEvent<HTMLDivElement>) {
-    const selectedTile = userAppStore.getState().selectedTile;
-    const selectedDir = userAppStore.getState().selectedDir;
-    const rules = userAppStore.getState().rules;
-    if (selectedDir === "" || selectedTile === "" || event.dataTransfer == null) return;
-
-    event.preventDefault();
-    const imageElement = new Image();
-    const data =  event.dataTransfer.getData("text").split("~");
-    if (document.getElementById("drop-" + data[0]) != null) return;
-
-    addRule(rules, data[0], selectedTile, selectedDir);
-    switch (selectedDir) {
-        case "r": {
-            addRule(rules, selectedTile, data[0], "l");
-            break;
-        }
-        case "l": {
-            addRule(rules, selectedTile, data[0], "r");
-            break;
-        }
-        case "u": {
-            addRule(rules, selectedTile, data[0], "d");
-            break;
-        }
-        case "d": {
-            addRule(rules, selectedTile, data[0], "u");
-            break;
-        }
-        case "ur": {
-            addRule(rules, selectedTile, data[0], "dl");
-            break;
-        }
-        case "ul": {
-            addRule(rules, selectedTile, data[0], "dr");
-            break;
-        }
-        case "dr": {
-            addRule(rules, selectedTile, data[0], "ul");
-            break;
-        }
-        case "dl": {
-            addRule(rules, selectedTile, data[0], "ur");
-            break;
-        }
-    }
-
-    return (
-        <DroppedTile
-            id={"drop-" + data[0]}
-            src={data[1]}
-            key={"drop-" + data[0]}
-        />
-    );
-}
-
 export function clickTile(id: string, src: string) {
-    clearSelectedDirection();
+    const setTiles = userAppStore.getState().setDropTileContainerItems;
+    clearSelectedDirectionHighlight();
+    setTiles([]);
+
     let tile= document.getElementById("selected-tile");
     if (tile == null) return;
 

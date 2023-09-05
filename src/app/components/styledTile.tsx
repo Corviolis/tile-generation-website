@@ -1,9 +1,9 @@
 'use client';
 
 import {userAppStore} from "@/app/utils/store";
-import {clearSelectedDirection} from "@/app/utils/menuFunctions";
 import React from "react";
 import Image from 'next/image'
+import {clickTile} from "@/app/utils/tileFunctions";
 
 interface TileProps {
     id: string;
@@ -11,7 +11,7 @@ interface TileProps {
 }
 
 export default function StyledTile({ id, src }:TileProps) {
-    const setSelectedTile = userAppStore((state) => state.setSelectedTile);
+    const {setSelectedTile} = userAppStore();
 
     return (
         <Image 
@@ -20,7 +20,10 @@ export default function StyledTile({ id, src }:TileProps) {
         width={25}
         height={25}
         alt="Tilemap Tile"
-        onClick={() => {clickTile(id, src); setSelectedTile(id.split("-")[1])}}
+        onClick={() => {
+            clickTile(id, src);
+            setSelectedTile(id.split("-")[1]);
+        }}
         onDragStart={(event) => drag(event, id, src)}
         draggable={true}
         className="
@@ -39,14 +42,6 @@ export default function StyledTile({ id, src }:TileProps) {
         "
         />
     )
-}
-
-function clickTile(id: string, src: string) {
-    clearSelectedDirection();
-    let tile= document.getElementById("selected-tile");
-    if (tile == null) return;
-
-    tile.style.backgroundImage = "url(" + src + ")";
 }
 
 function drag(event: React.DragEvent<HTMLImageElement>, id: string, src: string) {
