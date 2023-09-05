@@ -1,0 +1,61 @@
+interface InfoPaneProps {}
+
+export default function InfoPanel({}: InfoPaneProps) {
+	return (
+		<div
+			className="
+            w-full
+            h-min
+            absolute
+            top-5
+            px-5"
+		>
+			<div
+                className="
+                flex
+                flex-row-reverse
+                flex-nowrap
+                gap-x-2
+                w-full
+                min-h-[100px]
+                overflow-scroll"
+            >
+                <div
+					className="
+                    bg-[#2f3b51]
+                    w-[600px]
+                    h-min
+                    min-h-[100px]
+                    rounded-2xl
+                    p-2
+                    shadow-2xl
+                    text-gray-200
+                    flex-none"
+				></div>
+                <div
+					className="
+                    h-fill
+                    flex
+                    items-center
+                    relative"
+				>
+					<h1
+						className="
+                        text-black
+                        font-bold
+                        -rotate-90
+                        origin-center
+                        text-xl
+                        w-full
+                        right-1
+                        top-1/2
+                        -translate-y-1/2
+                        absolute"
+					>
+						INFO
+					</h1>
+				</div>
+			</div>
+		</div>
+	);
+}

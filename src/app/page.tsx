@@ -5,6 +5,7 @@ import {exportRulesAsJson, importRulesFromJson, importSpriteSheet} from "@/app/u
 import {drop} from '@/app/utils/tileFunctions';
 import React, {useState} from 'react';
 import {Panel} from "@/app/components/Panel";
+import InfoPanel from "./components/infoPane";
 
 export default function Home() {
 
@@ -69,7 +70,7 @@ export default function Home() {
       </div>
 
       {/* Right Pane */}
-      <div className="bg-neutral-400 w-full min-h-screen flex flex-col items-center justify-center gap-y-10">
+      <div className="bg-neutral-400 w-full min-h-screen flex flex-col items-center justify-center gap-y-10 relative">
         <div className="grid grid-cols-3 grid-rows-3 mt-[20px] gap-0 border-2 border-[#AD5B18] shadow-2xl from-[#fb923ca0] to-[#693cfb9c] bg-gradient-to-b">
           <Panel id="ul" />
           <Panel id="u" />
@@ -104,6 +105,7 @@ export default function Home() {
             return item;
           })}
         </div>
+        <InfoPanel />
       </div>
     </main>
   );

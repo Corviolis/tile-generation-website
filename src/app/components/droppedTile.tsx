@@ -3,12 +3,12 @@ import { clickTile } from '../utils/tileFunctions';
 import { userAppStore } from '../utils/store';
 
 
-interface TileProps {
+interface DroppedTileProps {
     id: string;
     src: string;
 }
 
-export default function DroppedTile({ id, src }:TileProps) {
+export default function DroppedTile({ id, src }:DroppedTileProps) {
     const setSelectedTile = userAppStore((state) => state.setSelectedTile);
     
     return (
