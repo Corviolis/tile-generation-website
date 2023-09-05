@@ -3,9 +3,10 @@ import { clearSelectedDirection } from "@/app/utils/menuFunctions";
 
 interface PanelProps {
   id: string;
+  onClick: () => void
 }
 
-export function Panel({ id }: PanelProps) {
+export function Panel({ id, onClick }: PanelProps) {
   const selectedTile = userAppStore((state) => state.selectedTile);
   const setSelectedDir = userAppStore((state) => state.setSelectedDir);
 
@@ -22,9 +23,10 @@ export function Panel({ id }: PanelProps) {
       border-[#AD5B18]"
       id={id}
       onClick={() => {
-        if (selectedTile == null) return;
+        if (selectedTile == "") return;
         clickPanel(id);
         setSelectedDir(id);
+        onClick();
       }}
     ></div>
   );
