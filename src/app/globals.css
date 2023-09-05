@@ -8,10 +8,14 @@
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
   }
+  .infoPanel {
+    
+  }
 }
 
 @layer base {
   body {
     color: #000000;
+    background-color: gray;
   }
 }

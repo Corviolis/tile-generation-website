@@ -5,7 +5,7 @@ import React from "react";
 
 export function RightPanel() {
     return (
-        <div className="bg-neutral-400 w-full min-h-screen flex flex-col items-center justify-center gap-y-10 relative">
+        <div className="w-full min-h-screen flex flex-col items-center justify-center gap-y-10 relative">
         <div className="grid grid-cols-3 grid-rows-3 mt-[20px] gap-0 border-2 border-[#AD5B18] shadow-2xl from-[#fb923ca0] to-[#693cfb9c] bg-gradient-to-b">
             <Panel id="ul"/>
             <Panel id="u"/>
