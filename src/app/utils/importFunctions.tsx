@@ -71,17 +71,6 @@ export async function exportRulesAsJson() {
     const rules = userAppStore.getState().rules;
     const cRules = JSON.parse(JSON.stringify(rules));
 
-    // Optimize json - Kinda jank, probably should rewrite
-    Object.keys(rules).forEach((key, _) => {
-        // @ts-ignore
-        Object.keys(rules[key]).forEach((sub_key, _) => {
-            // @ts-ignore
-            if (rules[key][sub_key].length === 0) delete cRules[key][sub_key];
-        })
-
-        if (Object.keys(cRules[key]).length === 0) delete cRules[key];
-    });
-
     const jsonText = JSON.stringify(cRules, null, 2);
     const blob = new Blob([jsonText], {type: 'text/plain'});
     const a = document.createElement('a');
