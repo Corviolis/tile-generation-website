@@ -65,11 +65,16 @@ export async function importRulesFromJson() {
 
     const newRules = _.merge(rules, JSON.parse(atob(reader.result.replace("data:application/json;base64,", ""))));
     userAppStore.getState().setRules(newRules);
+    userAppStore.getState().setLoadedFile(input.files[0].name);
 }
 
 export async function exportRulesAsJson() {
     const rules = userAppStore.getState().rules;
     const cRules = JSON.parse(JSON.stringify(rules));
+
+    Object.keys(rules).forEach((key, index) => {
+        cRules[key]["weight"] = 1;
+    })
 
     const jsonText = JSON.stringify(cRules, null, 2);
     const blob = new Blob([jsonText], {type: 'text/plain'});
