@@ -3,7 +3,8 @@
 import {userAppStore} from "@/app/utils/store";
 import React from "react";
 import Image from 'next/image'
-import {clickTile} from "@/app/utils/tileFunctions";
+import {clickTileImage} from "@/app/utils/tileFunctions";
+import {createDropTileWithRules} from "@/app/utils/ruleFuncitons";
 
 interface TileProps {
     id: string;
@@ -11,7 +12,7 @@ interface TileProps {
 }
 
 export default function StyledTile({ id, src }:TileProps) {
-    const {setSelectedTile} = userAppStore();
+    const {dropTileContainerItems, setDropTileContainerItems, setSelectedTile} = userAppStore();
 
     return (
         <Image 
@@ -20,9 +21,17 @@ export default function StyledTile({ id, src }:TileProps) {
         width={25}
         height={25}
         alt="Tilemap Tile"
-        onClick={() => {
-            clickTile(id, src);
-            setSelectedTile(id.split("-")[1]);
+        onClick={(event) => {
+            if (event.ctrlKey) {
+                const tile = createDropTileWithRules(id.split("-")[1], src);
+                if (tile == null) return;
+
+                dropTileContainerItems.push(tile);
+                setDropTileContainerItems(dropTileContainerItems);
+            } else {
+                clickTileImage(src);
+                setSelectedTile(id.split("-")[1]);
+            }
         }}
         onDragStart={(event) => drag(event, id, src)}
         draggable={true}

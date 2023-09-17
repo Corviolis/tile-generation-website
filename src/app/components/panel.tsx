@@ -56,7 +56,7 @@ function loadDropTiles() {
           <DroppedTile
             id={"drop-" + id}
             src={img.src}
-            key={"drop-" + id}/>
+            key={id}/>
         );
     });
 

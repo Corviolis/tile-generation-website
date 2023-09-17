@@ -1,6 +1,7 @@
 import Image from 'next/image'
-import { clickTile } from '../utils/tileFunctions';
+import { clickTileImage } from '../utils/tileFunctions';
 import { userAppStore } from '../utils/store';
+import {deleteRule} from "@/app/utils/ruleFuncitons";
 
 
 interface DroppedTileProps {
@@ -9,7 +10,7 @@ interface DroppedTileProps {
 }
 
 export default function DroppedTile({ id, src }:DroppedTileProps) {
-    const {setSelectedTile} = userAppStore();
+    const {dropTileContainerItems, setDropTileContainerItems, setSelectedTile} = userAppStore();
     
     return (
         <Image 
@@ -19,7 +20,18 @@ export default function DroppedTile({ id, src }:DroppedTileProps) {
         height={25}
         alt="Tilemap Tile"
         draggable={false}
-        onClick={() => {clickTile(id, src); setSelectedTile(id.split("-")[1])}}
+        onClick={(event) => {
+            const tileId = id.split("-")[1];
+            if (event.ctrlKey) {
+                deleteRule(tileId);
+
+                const newTiles = dropTileContainerItems.filter((tile) => tile.key !== tileId)
+                setDropTileContainerItems(newTiles);
+            } else {
+                clickTileImage(src);
+                setSelectedTile(tileId);
+            }
+        }}
         className="
         xl:w-20
         lg:w-16

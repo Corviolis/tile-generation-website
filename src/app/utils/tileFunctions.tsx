@@ -1,7 +1,6 @@
 import StyledTile from '@/app/components/styledTile';
 import {userAppStore} from "@/app/utils/store";
 import React from "react";
-import DroppedTile from '../components/droppedTile';
 import {clearSelectedDirectionHighlight} from "@/app/components/rightPanel";
 
 export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
@@ -41,7 +40,7 @@ export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
     return tiles;
 }
 
-export function clickTile(id: string, src: string) {
+export function clickTileImage(src: string) {
     const setTiles = userAppStore.getState().setDropTileContainerItems;
     clearSelectedDirectionHighlight();
     setTiles([]);
