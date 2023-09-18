@@ -18,7 +18,7 @@ export function LeftPanel() {
             w-[400px]
             lg:min-w-[500px]
             xl:min-w-[600px]
-            2xl:min-w-[700px]">
+            2xl:min-w-[720px]">
             <h1 className="text-5xl mb-5 font-bold text-[#FFA357]">WFC Rule Builder v1.0</h1>
             <div className="flex flex-row flex-wrap font-mono">
                 <div className="rounded-lg p-4 bg-[#AD5B18] space-x-4 shadow-xl w-fit flex flex-row mr-2 mb-2">
