@@ -13,7 +13,7 @@ export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
     canvas.height = image.height;
     ctx.drawImage(image, 0, 0);
 
-    const tiles = [];
+    const tiles: React.JSX.Element[][] = [[]];
     for (let y = 0; y < canvas.height; y += tileSize) {
         for (let x = 0; x < canvas.width; x += tileSize) {
           // Create a new canvas for each tile
@@ -29,10 +29,10 @@ export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
 
           let key = x / tileSize + ":" + y / tileSize;
           tiles.push(
-              <StyledTile
+              [<StyledTile
                 id={"tile-" + key}
                 src={tileCanvas.toDataURL()}
-                key={key}/>
+                key={key}/>]
           );
         }
     }
@@ -40,13 +40,13 @@ export function breakImageIntoTiles(image: HTMLImageElement, tileSize: number) {
     return tiles;
 }
 
-export function clickTileImage(src: string) {
+export function clickTileImage(id: string, src: string) {
     const setTiles = userAppStore.getState().setDropTileContainerItems;
     clearSelectedDirectionHighlight();
     setTiles([]);
 
-    let tile= document.getElementById("selected-tile");
-    if (tile == null) return;
+    let selectedTile = document.getElementById("selected-tile");
+    if (selectedTile == null) return;
 
-    tile.style.backgroundImage = "url(" + src + ")";
+    selectedTile.style.backgroundImage = "url(" + src + ")";
 }

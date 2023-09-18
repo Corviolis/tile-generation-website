@@ -28,7 +28,7 @@ export default function DroppedTile({ id, src }:DroppedTileProps) {
                 const newTiles = dropTileContainerItems.filter((tile) => tile.key !== tileId)
                 setDropTileContainerItems(newTiles);
             } else {
-                clickTileImage(src);
+                clickTileImage(id, src);
                 setSelectedTile(tileId);
             }
         }}
